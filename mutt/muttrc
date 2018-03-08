@@ -1,0 +1,182 @@
+source ~/.config/mutt/aliases
+source ~/.config/mutt/muttcol
+set wait_key = no
+macro index <F4> '<sync-mailbox><enter-command>source ~/.mutt/gmail.conf<enter><change-folder>!<enter>'
+macro index <F5> '<sync-mailbox><enter-command>source ~/.mutt/steinz.conf<enter><change-folder>!<enter>'
+macro index <F6> '<sync-mailbox><enter-command>source ~/.mutt/offline.conf<enter><change-folder>!<enter>'
+macro index <F8> '<sync-mailbox><enter-command>source ~/.mutt/shopping.conf<enter><change-folder>!<enter>'
+macro index <F9> '<sync-mailbox><enter-command>source ~/.mutt/420blazeit.conf<enter><change-folder>!<enter>'
+macro index <F7> '/jiri<enter>v/plain<enter>|cat<space>>><space>jirka<enter>q
+macro index U '!mbsync offline<enter>'
+#text/htmlset move = no  #Prevents mutt from asking to move read messages to INBOX
+set imap_keepalive = 900
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+set record=+"Sent Items"
+hdr_order Date From To Cc #Sorting emails by the given criteria (from left to right)
+ignore *
+unignore from: date subject to cc
+unignore x-mailing-list: posted-to:
+unignore x-mailer: #Nice looks
+set markers=no # removes the "+" sign from the beginning of wrapped lines
+set pager_index_lines= 5
+set sort = 'threads'
+set sort_aux = 'last-date-received'
+bind index l next-entry
+bind pager l next-line
+bind pager k previous-line
+bind pager L next-entry
+bind pager K previous-entry
+bind index k previous-entry
+bind index x delete-thread
+bind attach l next-entry
+bind attach k previous-entry
+#Set your editor
+#set editor='vim + -c "set textwidth=80" -c "set wrap" -c "set nocp" -c "?^$"'
+## .mutt/muttrc
+#folder-hook 'appsdomain.tld' 'source ~/.mutt/appsdomain.tld'
+#folder-hook 'companydomain.tld' 'source ~/.mutt/companydomain.tld'
+## Choose which account should be loaded on startup, uncomment only one of these:
+source ~/.mutt/offline.conf
+##source ~/.mutt/companydomain.tld
+########################
+#
+#
+set crypt_use_gpgme=no
+set sort = 'reverse-date-received'
+set editor = vim
+#set copy = no
+set timeout = "5"
+set mail_check = "10"
+set mailcap_path = ~/.config/mutt/mailcap
+set date_format="%d/%m %H:%M"
+set index_format="%2C %Z %d %-15.15F %s (%-4.4c)"
+#set status_format="mpv ~/.config/mutt/bump.wav"
+
+auto_view plain text
+alternative_order text/plain text/enriched text/html
+
+mono bold bold
+mono underline underline
+mono indicator reverse
+color index yellow default '.*'
+color index_author red default '.*'
+color index_number blue default
+color index_subject cyan default '.s'
+color index_size green default
+color body brightred default [\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+
+color body brightblue default (https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+
+
+bind index G last-entry
+#bind index gg first-entry
+bind index d half-down
+bind index u half-up
+bind index D delete-message
+bind index F search 
+bind index R group-reply
+bind compose p postpone-message
+
+# This is a complete list of sidebar-related configuration.
+
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+
+# Should the Sidebar be shown?
+set sidebar_visible = yes
+
+# How wide should the Sidebar be in screen columns?
+# Note: Some characters, e.g. Chinese, take up two columns each.
+set sidebar_width = 20
+
+# Should the mailbox paths be abbreviated?
+set sidebar_short_path = no
+
+# When abbreviating mailbox path names, use any of these characters as path
+# separators.  Only the part after the last separators will be shown.
+# For file folders '/' is good.  For IMAP folders, often '.' is useful.
+set sidebar_delim_chars = '/.'
+
+# If the mailbox path is abbreviated, should it be indented?
+set sidebar_folder_indent = no
+
+# Indent mailbox paths with this string.
+set sidebar_indent_string = '  '
+
+# Make the Sidebar only display mailboxes that contain new, or flagged,
+# mail.
+set sidebar_new_mail_only = no
+
+# Any mailboxes that are whitelisted will always be visible, even if the
+# sidebar_new_mail_only option is enabled.
+sidebar_whitelist '/home/user/mailbox1'
+sidebar_whitelist '/home/user/mailbox2'
+
+# When searching for mailboxes containing new mail, should the search wrap
+# around when it reaches the end of the list?
+set sidebar_next_new_wrap = no
+
+# The character to use as the divider between the Sidebar and the other Mutt
+# panels.
+# Note: Only the first character of this string is used.
+set sidebar_divider_char = '|'
+
+# Enable extended buffy mode to calculate total, new, and flagged
+# message counts for each mailbox.
+set mail_check_stats
+
+# Display the Sidebar mailboxes using this format string.
+set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
+
+# Sort the mailboxes in the Sidebar using this method:
+#       count    - total number of messages
+#       flagged  - number of flagged messages
+#       new      - number of new messages
+#       path     - mailbox path
+#       unsorted - do not sort the mailboxes
+set sidebar_sort_method = 'unsorted'
+
+# --------------------------------------------------------------------------
+# FUNCTIONS - shown with an example mapping
+# --------------------------------------------------------------------------
+
+# Move the highlight to the previous mailbox
+bind index,pager \Ck sidebar-prev
+
+# Move the highlight to the next mailbox
+bind index,pager \Cl sidebar-next
+
+# Open the highlighted mailbox
+bind index,pager \Co sidebar-open
+
+# Toggle the visibility of the Sidebar.
+bind index,pager B sidebar-toggle-visible
+
+mailboxes +"Sent Items"
+# --------------------------------------------------------------------------
+# COLORS - some unpleasant examples are given
+# --------------------------------------------------------------------------
+# Note: All color operations are of the form:
+#       color OBJECT FOREGROUND BACKGROUND
+
+# Color of the current, open, mailbox
+# Note: This is a general Mutt option which colors all selected items.
+color indicator cyan black
+
+# Color of the highlighted, but not open, mailbox.
+color sidebar_highlight black color8
+
+# Color of the divider separating the Sidebar from Mutt panels
+color sidebar_divider color8 black
+
+# Color to give mailboxes containing flagged mail
+color sidebar_flagged red black
+
+# Color to give mailboxes containing new mail
+color sidebar_new green black
+
+# --------------------------------------------------------------------------
+
+# vim: syntax=muttrc
+macro index,pager O "<enter-command>set pipe_decode = yes<enter><pipe-message>gpg -d<enter><enter-command>set pipe_decode = no<enter>""decode message"
